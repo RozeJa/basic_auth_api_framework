@@ -90,6 +90,26 @@ public abstract class RestController<E extends Entity> {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/many")
+    public ResponseEntity<Object> postMany(@RequestBody List<E> data, @RequestHeader Map<String, String> headers) {
+        try {    
+            List<E> saved = service.createSecuredTransaction()
+                .setJWT(headers.get(HeaderItems.AUTHORIZATION))
+                .createMany(data);
+
+            return new ResponseEntity<>(saved, HttpStatus.OK);
+        } catch (MissedAuthExeption e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (SecurityException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (ValidationException | DuplicateKeyException | IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     @PutMapping("/{id}")
     public ResponseEntity<Object> put(@PathVariable String id, @RequestBody E data, @RequestHeader Map<String,String> headers) {
@@ -97,6 +117,31 @@ public abstract class RestController<E extends Entity> {
             E updated = service.createSecuredTransaction()
                 .setJWT(headers.get(HeaderItems.AUTHORIZATION))
                 .update(id, data);
+
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (NullPointerException | NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (MissedAuthExeption e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (ValidationException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (DuplicateKeyException | IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/many")
+    public ResponseEntity<Object> putMany(@RequestBody Map<String, E> data, @RequestHeader Map<String, String> headers) {
+        try {
+            List<E> updated = service.createSecuredTransaction()
+                .setJWT(headers.get(HeaderItems.AUTHORIZATION))
+                .updateMany(data);
 
             return new ResponseEntity<>(updated, HttpStatus.OK);
         } catch (NullPointerException | NoSuchElementException e) {

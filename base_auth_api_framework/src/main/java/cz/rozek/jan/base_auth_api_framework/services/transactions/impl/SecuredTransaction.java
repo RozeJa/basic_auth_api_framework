@@ -1,6 +1,7 @@
 package cz.rozek.jan.base_auth_api_framework.services.transactions.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -72,6 +73,13 @@ public class SecuredTransaction<E extends Entity> implements ISecuredTransaction
     }
 
     @Override
+    public List<E> createMany(List<E> enties) {
+        securedService.verifyAccess(jwt, creadPermission);
+
+        return transaction.createMany(enties);
+    }
+
+    @Override
     public List<E> readAll(E example, Pageable pageable) {
         securedService.verifyAccess(jwt, readPermission);
 
@@ -104,6 +112,13 @@ public class SecuredTransaction<E extends Entity> implements ISecuredTransaction
         securedService.verifyAccess(jwt, updatePermission);
 
         return transaction.update(id, entity);
+    }
+
+    @Override
+    public List<E> updateMany(Map<String, E> enties) {
+        securedService.verifyAccess(jwt, updatePermission);
+
+        return transaction.updateMany(enties);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cz.rozek.jan.base_auth_api_framework.services.transactions.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Example;
@@ -78,6 +79,17 @@ public class Transaction<E extends Entity> implements ITransaction<E> {
     }
 
     @Override
+    public List<E> createMany(List<E> enties) {
+        for (E e : enties) {
+            e.validate();
+        }
+
+        List<E> saved = repository.saveAll(enties);
+
+        return saved;
+    }
+
+    @Override
     public E update(String id, E entity) {
         entity.validate();
 
@@ -90,6 +102,19 @@ public class Transaction<E extends Entity> implements ITransaction<E> {
         E data = repository.findById(id).get();
 
         return data;
+    }
+    @Override
+    public List<E> updateMany(Map<String, E> enties) {
+        for (String id : enties.keySet()) {
+            enties.get(id).validate();
+                 
+            if (repository.findById(id).isEmpty()) 
+                throw new NullPointerException();
+            
+            enties.get(id).setId(id);
+        }
+
+        return repository.saveAll(enties.values());
     }
 
     @Override
