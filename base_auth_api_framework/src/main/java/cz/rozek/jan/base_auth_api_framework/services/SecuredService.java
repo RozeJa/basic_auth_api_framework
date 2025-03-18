@@ -21,7 +21,6 @@ public class SecuredService implements ISecuredService {
         return authorizationService;
     }
 
-
     @Override
     public void verifyAccess(String accessJWT, Permission requiredPermition) {
         if (accessJWT == null)
