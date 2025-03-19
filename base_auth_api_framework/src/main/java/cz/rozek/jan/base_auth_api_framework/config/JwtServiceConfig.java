@@ -34,6 +34,8 @@ public class JwtServiceConfig {
 
         jwtService.addCustomer(JwtService.getBasicJwtConsumerBuilder(), IAuthentizationService.ACCESS_TOKEN);
         jwtService.addCustomer(JwtService.getBasicJwtConsumerBuilder(), IAuthentizationService.LOGIN_TOKEN);
+        jwtService.addCustomer(JwtService.getBasicJwtConsumerBuilder(), IAuthentizationService.THRUST_TOKEN);
+        jwtService.addCustomer(JwtService.getBasicJwtConsumerBuilder(), IAuthentizationService.PERMISSION_TOKEN);
 
         return jwtService;
     }

@@ -57,6 +57,20 @@ public class User implements Entity {
             return null;
         }
     }
+    
+    public boolean addLoginJWT(String loginJWT) {
+        return loginJWTs.add(loginJWT);
+    } 
+    public boolean removeLoginJWT(String loginJWT) {
+        return loginJWTs.remove(loginJWT);
+    }
+    
+    public boolean addThrustJWT(String trustJWT) {
+        return trustJWTs.add(trustJWT);
+    } 
+    public boolean removeThrustJWT(String trustJWT) {
+        return trustJWTs.remove(trustJWT);
+    }
 
     @Override
     public void validate() throws ValidationException {
