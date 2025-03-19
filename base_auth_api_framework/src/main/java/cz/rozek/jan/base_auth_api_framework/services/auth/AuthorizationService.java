@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import cz.rozek.jan.base_auth_api_framework.services.jwt.IJwtService;
@@ -14,6 +15,7 @@ import cz.rozek.jan.base_auth_api_framework.Role;
 import cz.rozek.jan.base_auth_api_framework.exceptions.SecurityException;
 import cz.rozek.jan.base_auth_api_framework.permissions.Permission;
 
+@Primary
 @Service
 public class AuthorizationService implements IAuthorizationService {
 
