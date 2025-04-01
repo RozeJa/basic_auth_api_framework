@@ -13,8 +13,8 @@ public interface IAuthentizationService {
     void register(User user) throws ValidationException;
     boolean activate(String code);
     String login(User user);
-    boolean logout(String accessJwt);
+    boolean logout(String loginJwt);
 
-    String getJWT(String accessJwt);
-    String resetPassword(User user, String jwt);
+    String getJWT(String loginJwt);
+    String resetPassword(User user, String loginJWT);
 }

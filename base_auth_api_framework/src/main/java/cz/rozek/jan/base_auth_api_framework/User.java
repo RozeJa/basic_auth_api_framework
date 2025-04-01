@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -59,17 +60,38 @@ public class User implements Entity {
     }
     
     public boolean addLoginJWT(String loginJWT) {
-        return loginJWTs.add(loginJWT);
+        String token = BCrypt.hashpw(loginJWT, BCrypt.gensalt());
+        return loginJWTs.add(token);
     } 
     public boolean removeLoginJWT(String loginJWT) {
-        return loginJWTs.remove(loginJWT);
+        String token = findToken(loginJWTs, loginJWT);
+
+        return loginJWTs.remove(token);
+    }
+    public boolean containsLoginJWT(String loginJWT) {
+        return findToken(loginJWTs, loginJWT) == null;
+    }
+
+    private String findToken(Set<String> tokens, String JWT) {
+        for (String token : tokens) {
+            if (BCrypt.checkpw(JWT, token)) {
+                return token;
+            }
+        }
+        return null;
     }
     
-    public boolean addThrustJWT(String trustJWT) {
-        return trustJWTs.add(trustJWT);
+    public boolean addTrustJWT(String trustJWT) {
+        String token = BCrypt.hashpw(trustJWT, BCrypt.gensalt());
+        return trustJWTs.add(token);
     } 
-    public boolean removeThrustJWT(String trustJWT) {
-        return trustJWTs.remove(trustJWT);
+    public boolean removeTrustJWT(String trustJWT) {
+        String token = findToken(trustJWTs, trustJWT);
+
+        return trustJWTs.remove(token);
+    }
+    public boolean containsTrustJWT(String trustJWT) {
+        return findToken(loginJWTs, trustJWT) == null;
     }
 
     @Override

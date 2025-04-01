@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import cz.rozek.jan.base_auth_api_framework.permissions.Permission;
 import cz.rozek.jan.base_auth_api_framework.services.jwt.IJwtService;
 
-@Service("permissionAuthorizatinService")
+@Service("permissionAuthorizatinServic  e")
 public class PermissionAuthorizatinService extends AuthorizationService {
 
     public PermissionAuthorizatinService(IJwtService jwtService) {
