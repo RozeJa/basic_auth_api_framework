@@ -20,13 +20,13 @@ public class PermissionAutoloaderConfig {
     @Value("${spring.baaf.permissions.root-package}")
     private String rootPackage;
 
-    @Value("${spring.baaf.permissions.permission-server-uri}")
+    @Value("${spring.baaf.permissions.permission-server-uri:none}")
     private String uri;
     
     @Bean
     public PermissionAutoloader getPermissionAutoloader(ApplicationContext context, IJwtService jwtService) {
 
-        if (rootPackage == null) {
+        if (uri.equals("none")) {
             return null;
         } 
 

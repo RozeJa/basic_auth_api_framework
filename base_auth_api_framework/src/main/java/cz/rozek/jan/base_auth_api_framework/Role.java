@@ -33,28 +33,42 @@ public class Role implements Comparable<Role>, Entity {
     private boolean enabled = true;
 
     public void addPermissions(Permission permission) {
-        if (permissions == null) 
+        if (permissions == null) {
             permissions = new TreeSet<>();
+        }
         permissions.add(permission);
     }
     public Permission removePermission(Permission permission) {
+        if (permissions == null) {
+            return null;
+        }
+
         return permissions.remove(permission) ? permission : null;
     }
 
     public void addGrantablePermissions(Permission permission) {
-        if (grantablePermissions == null) 
+        if (grantablePermissions == null) {
             grantablePermissions = new TreeSet<>();
+        }
         grantablePermissions.add(permission);
     }
     public Permission removeGrantablePermissions(Permission permission) {
+        if (grantablePermissions == null) {
+            return null;
+        }
+
         return grantablePermissions.remove(permission) ? permission : null;
     }
     
     public boolean containsPermission(Permission permission) {
+        if (permissions == null) 
+            return false;
         return permissions.contains(permission);
     }
 
     public boolean containsGrantablePermission(Permission permission) {
+        if (grantablePermissions == null) 
+            return false;
         return grantablePermissions.contains(permission);
     }
 
