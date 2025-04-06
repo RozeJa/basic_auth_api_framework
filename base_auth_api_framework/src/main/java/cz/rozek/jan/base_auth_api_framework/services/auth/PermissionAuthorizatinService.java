@@ -4,14 +4,16 @@ import java.util.NoSuchElementException;
 
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cz.rozek.jan.base_auth_api_framework.permissions.Permission;
 import cz.rozek.jan.base_auth_api_framework.services.jwt.IJwtService;
 
-@Service("permissionAuthorizatinServic  e")
+@Service("permissionAuthorizatinService")
 public class PermissionAuthorizatinService extends AuthorizationService {
 
+    @Autowired
     public PermissionAuthorizatinService(IJwtService jwtService) {
         super(jwtService);
     }
