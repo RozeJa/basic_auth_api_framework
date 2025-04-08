@@ -33,8 +33,8 @@ public class User implements Entity {
     @DBRef
     private Set<Role> roles;
     
-    private Set<String> loginJWTs = new TreeSet<>();
-    private Set<String> trustJWTs = new TreeSet<>();
+    private Set<String> loginJWTs;
+    private Set<String> trustJWTs;
 
     private boolean activated = false;
     private boolean enabled = true;
@@ -61,14 +61,24 @@ public class User implements Entity {
     
     public boolean addLoginJWT(String loginJWT) {
         String token = BCrypt.hashpw(loginJWT, BCrypt.gensalt());
+
+        if (loginJWTs == null) 
+            loginJWTs = new TreeSet<>();
+
         return loginJWTs.add(token);
     } 
     public boolean removeLoginJWT(String loginJWT) {
+        if (loginJWTs == null) 
+            return false;
+
         String token = findToken(loginJWTs, loginJWT);
 
         return loginJWTs.remove(token);
     }
     public boolean containsLoginJWT(String loginJWT) {
+        if (loginJWTs == null) 
+            return false;
+
         return findToken(loginJWTs, loginJWT) == null;
     }
 
@@ -83,15 +93,25 @@ public class User implements Entity {
     
     public boolean addTrustJWT(String trustJWT) {
         String token = BCrypt.hashpw(trustJWT, BCrypt.gensalt());
+
+        if (trustJWTs == null) 
+            trustJWTs = new TreeSet<>();
+
         return trustJWTs.add(token);
     } 
     public boolean removeTrustJWT(String trustJWT) {
+        if (trustJWTs == null) 
+            return false;
+
         String token = findToken(trustJWTs, trustJWT);
 
         return trustJWTs.remove(token);
     }
     public boolean containsTrustJWT(String trustJWT) {
-        return findToken(loginJWTs, trustJWT) == null;
+        if (trustJWTs == null) 
+            return false;
+
+        return findToken(trustJWTs, trustJWT) == null;
     }
 
     @Override
